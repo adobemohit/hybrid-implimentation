@@ -296,9 +296,9 @@
 			headers: headers,
 			body: JSON.stringify(data)
 		})
-			.then(response => {
+			.then(response =>
 				response.json()
-			}) // Parse the JSON response
+			) // Parse the JSON response
 			.then(data => {
 				console.log("Success:", data);
 			})

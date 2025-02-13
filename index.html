@@ -15,6 +15,199 @@
 		<link rel="stylesheet" href="assets/css/noscript.css" />
 	</noscript>
 	<script src="https://assets.adobedtm.com/a539bf324e10/167e1759db19/launch-e8987cc01cb5.js" async></script>
+	<script>
+
+
+		// Check for the presence of the "kndctr" cookie
+		if (!document.cookie.includes("kndctr_1C7B1E286595A5660A495C2F_AdobeOrg_identity")) {
+			console.log("Hello Inside first");
+
+			// Make a POST request using fetch
+			fetch('https://edge.adobedc.net/ee/v2/interact?dataStreamId=caa8ce09-b14f-4060-b1bb-c4725b91f0f9', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					"event": {
+						"xdm": {
+							"eventType": "decisioning.propositionFetch",
+							"data": {
+								"__adobe": {
+									"target": {
+										"profile.eyeColor": "brown",
+										"profile.hairColor": "brown",
+										"profile.shoeColor": "black"
+									}
+								}
+							}
+						}
+					},
+					"web": {
+						"webPageDetails": {
+							"URL": "https://adobemohit.github.io/",
+							"name": ""
+						},
+						"webReferrer": {
+							"URL": ""
+						}
+					},
+					"device": {
+						"screenHeight": 1440,
+						"screenWidth": 3440,
+						"screenOrientation": "landscape"
+					},
+					"environment": {
+						"type": "browser",
+						"browserDetails": {
+							"viewportWidth": 3440,
+							"viewportHeight": 1440
+						}
+					},
+					"placeContext": {
+						"localTime": "2022-03-22T22:45:21.193-06:00",
+						"localTimezoneOffset": 360
+					},
+					"timestamp": "2022-03-23T04:45:21.193Z",
+					"query": {
+						"identity": {
+							"fetch": ["ECID"]
+						},
+						"personalization": {
+							"schemas": [
+								"https://ns.adobe.com/personalization/html-content-item",
+								"https://ns.adobe.com/personalization/json-content-item",
+								"https://ns.adobe.com/personalization/redirect-item",
+								"https://ns.adobe.com/personalization/dom-action"
+							],
+							"decisionScopes": ["__view__"]
+						}
+					}
+				})
+			})
+				.then(response => response.json())
+				.then(data => {
+					// Handle the API response
+					const identityCookie = data.handle[3].payload[0].value;
+					const clusterCookie = data.handle[3].payload[1].value;
+
+					// Set cookies for "kndctr" identity and cluster
+					document.cookie = `kndctr_1C7B1E286595A5660A495C2F_AdobeOrg_identity=${identityCookie}; max-age=${30 * 24 * 60 * 60}; path=/`;
+					document.cookie = `kndctr_1C7B1E286595A5660A495C2F_AdobeOrg_cluster=${clusterCookie}; max-age=${30 * 24 * 60 * 60}; path=/`;
+
+					// Output response to the page
+					window.responseHeader = data.headers;  // Assuming 'headers' are part of the response (adjust based on actual response)
+					window.responseBody = data;
+
+					// Display content as needed
+					console.log(window.responseHeader);
+					console.log(window.responseBody);
+					// Optionally, embed in HTML
+					//document.body.innerHTML += `<pre>${JSON.stringify(window.responseBody, null, 2)}</pre>`;
+				})
+				.catch(error => {
+					console.error('Error during fetch:', error);
+				});
+
+		} else {
+			// If "kndctr" cookie is found, proceed with another API request
+			console.log("Cookie found, proceeding with the second request.");
+
+			const identityCookie = getCookie("kndctr_1C7B1E286595A5660A495C2F_AdobeOrg_identity");
+			const clusterCookie = getCookie("kndctr_1C7B1E286595A5660A495C2F_AdobeOrg_cluster");
+
+			fetch('https://edge.adobedc.net/ee/v2/interact?dataStreamId=caa8ce09-b14f-4060-b1bb-c4725b91f0f9', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					"meta": {
+						"configOverrides": {},
+						"state": {
+							"domain": "localhost.com",
+							"cookiesEnabled": true,
+							"entries": [
+								{
+									"key": "kndctr_1C7B1E286595A5660A495C2F_AdobeOrg_identity",
+									"value": identityCookie
+								},
+								{
+									"key": "kndctr_1C7B1E286595A5660A495C2F_AdobeOrg_cluster",
+									"value": clusterCookie
+								}
+							]
+						}
+					},
+					"event": {
+						"xdm": {
+							"eventType": "decisioning.propositionFetch",
+							"data": {
+								"__adobe": {
+									"target": {
+										"profile.eyeColor": "brown",
+										"profile.hairColor": "brown",
+										"profile.shoeColor": "black"
+									}
+								}
+							}
+						}
+					},
+					"web": {
+						"webPageDetails": {
+							"URL": "http://localhost/alloy-samples-main/target/Edge-Network-API/index.php",
+							"name": ""
+						},
+						"webReferrer": {
+							"URL": ""
+						}
+					},
+					"placeContext": {
+						"localTime": "2022-03-22T22:45:21.193-06:00",
+						"localTimezoneOffset": 360
+					},
+					"timestamp": "2022-03-23T04:45:21.193Z",
+					"query": {
+						"identity": {
+							"fetch": ["ECID"]
+						},
+						"personalization": {
+							"schemas": [
+								"https://ns.adobe.com/personalization/html-content-item",
+								"https://ns.adobe.com/personalization/json-content-item",
+								"https://ns.adobe.com/personalization/redirect-item",
+								"https://ns.adobe.com/personalization/dom-action"
+							],
+							"decisionScopes": ["__view__"]
+						}
+					}
+				})
+			})
+				.then(response => response.json())
+				.then(data => {
+					// Handle the API response
+					window.responseHeader = data.headers;
+					window.responseBody = data;
+
+					// Output response to the page
+					console.log(window.responseHeader);
+					console.log(window.responseBody);
+					// Optionally, embed in HTML
+					//document.body.innerHTML += `<pre>${JSON.stringify(window.responseBody, null, 2)}</pre>`;
+				})
+				.catch(error => {
+					console.error('Error during fetch:', error);
+				});
+		}
+
+		// Function to get cookies
+		function getCookie(name) {
+			let match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+			return match ? match[2] : null;
+		}
+
+
+	</script>
 </head>
 
 <body class="is-preload landing">
@@ -224,199 +417,7 @@
 	<script src="assets/js/breakpoints.min.js"></script>
 	<script src="assets/js/util.js"></script>
 	<script src="assets/js/main.js"></script>
-	<script>
 
-
-		// Check for the presence of the "kndctr" cookie
-		if (!document.cookie.includes("kndctr_1C7B1E286595A5660A495C2F_AdobeOrg_identity")) {
-			console.log("Hello Inside first");
-
-			// Make a POST request using fetch
-			fetch('https://edge.adobedc.net/ee/v2/interact?dataStreamId=caa8ce09-b14f-4060-b1bb-c4725b91f0f9', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					"event": {
-						"xdm": {
-							"eventType": "decisioning.propositionFetch",
-							"data": {
-								"__adobe": {
-									"target": {
-										"profile.eyeColor": "brown",
-										"profile.hairColor": "brown",
-										"profile.shoeColor": "black"
-									}
-								}
-							}
-						}
-					},
-					"web": {
-						"webPageDetails": {
-							"URL": "https://adobemohit.github.io/",
-							"name": ""
-						},
-						"webReferrer": {
-							"URL": ""
-						}
-					},
-					"device": {
-						"screenHeight": 1440,
-						"screenWidth": 3440,
-						"screenOrientation": "landscape"
-					},
-					"environment": {
-						"type": "browser",
-						"browserDetails": {
-							"viewportWidth": 3440,
-							"viewportHeight": 1440
-						}
-					},
-					"placeContext": {
-						"localTime": "2022-03-22T22:45:21.193-06:00",
-						"localTimezoneOffset": 360
-					},
-					"timestamp": "2022-03-23T04:45:21.193Z",
-					"query": {
-						"identity": {
-							"fetch": ["ECID"]
-						},
-						"personalization": {
-							"schemas": [
-								"https://ns.adobe.com/personalization/html-content-item",
-								"https://ns.adobe.com/personalization/json-content-item",
-								"https://ns.adobe.com/personalization/redirect-item",
-								"https://ns.adobe.com/personalization/dom-action"
-							],
-							"decisionScopes": ["__view__"]
-						}
-					}
-				})
-			})
-				.then(response => response.json())
-				.then(data => {
-					// Handle the API response
-					const identityCookie = data.handle[3].payload[0].value;
-					const clusterCookie = data.handle[3].payload[1].value;
-
-					// Set cookies for "kndctr" identity and cluster
-					document.cookie = `kndctr_1C7B1E286595A5660A495C2F_AdobeOrg_identity=${identityCookie}; max-age=${30 * 24 * 60 * 60}; path=/`;
-					document.cookie = `kndctr_1C7B1E286595A5660A495C2F_AdobeOrg_cluster=${clusterCookie}; max-age=${30 * 24 * 60 * 60}; path=/`;
-
-					// Output response to the page
-					window.responseHeader = data.headers;  // Assuming 'headers' are part of the response (adjust based on actual response)
-					window.responseBody = data;
-
-					// Display content as needed
-					console.log(window.responseHeader);
-					console.log(window.responseBody);
-					// Optionally, embed in HTML
-					//document.body.innerHTML += `<pre>${JSON.stringify(window.responseBody, null, 2)}</pre>`;
-				})
-				.catch(error => {
-					console.error('Error during fetch:', error);
-				});
-
-		} else {
-			// If "kndctr" cookie is found, proceed with another API request
-			console.log("Cookie found, proceeding with the second request.");
-
-			const identityCookie = getCookie("kndctr_1C7B1E286595A5660A495C2F_AdobeOrg_identity");
-			const clusterCookie = getCookie("kndctr_1C7B1E286595A5660A495C2F_AdobeOrg_cluster");
-
-			fetch('https://edge.adobedc.net/ee/v2/interact?dataStreamId=caa8ce09-b14f-4060-b1bb-c4725b91f0f9', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					"meta": {
-						"configOverrides": {},
-						"state": {
-							"domain": "localhost.com",
-							"cookiesEnabled": true,
-							"entries": [
-								{
-									"key": "kndctr_1C7B1E286595A5660A495C2F_AdobeOrg_identity",
-									"value": identityCookie
-								},
-								{
-									"key": "kndctr_1C7B1E286595A5660A495C2F_AdobeOrg_cluster",
-									"value": clusterCookie
-								}
-							]
-						}
-					},
-					"event": {
-						"xdm": {
-							"eventType": "decisioning.propositionFetch",
-							"data": {
-								"__adobe": {
-									"target": {
-										"profile.eyeColor": "brown",
-										"profile.hairColor": "brown",
-										"profile.shoeColor": "black"
-									}
-								}
-							}
-						}
-					},
-					"web": {
-						"webPageDetails": {
-							"URL": "http://localhost/alloy-samples-main/target/Edge-Network-API/index.php",
-							"name": ""
-						},
-						"webReferrer": {
-							"URL": ""
-						}
-					},
-					"placeContext": {
-						"localTime": "2022-03-22T22:45:21.193-06:00",
-						"localTimezoneOffset": 360
-					},
-					"timestamp": "2022-03-23T04:45:21.193Z",
-					"query": {
-						"identity": {
-							"fetch": ["ECID"]
-						},
-						"personalization": {
-							"schemas": [
-								"https://ns.adobe.com/personalization/html-content-item",
-								"https://ns.adobe.com/personalization/json-content-item",
-								"https://ns.adobe.com/personalization/redirect-item",
-								"https://ns.adobe.com/personalization/dom-action"
-							],
-							"decisionScopes": ["__view__"]
-						}
-					}
-				})
-			})
-				.then(response => response.json())
-				.then(data => {
-					// Handle the API response
-					window.responseHeader = data.headers;
-					window.responseBody = data;
-
-					// Output response to the page
-					console.log(window.responseHeader);
-					console.log(window.responseBody);
-					// Optionally, embed in HTML
-					//document.body.innerHTML += `<pre>${JSON.stringify(window.responseBody, null, 2)}</pre>`;
-				})
-				.catch(error => {
-					console.error('Error during fetch:', error);
-				});
-		}
-
-		// Function to get cookies
-		function getCookie(name) {
-			let match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-			return match ? match[2] : null;
-		}
-
-
-	</script>
 </body>
 
 </html>

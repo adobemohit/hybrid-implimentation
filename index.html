@@ -371,7 +371,7 @@
 					console.log(window.responseHeader);
 					console.log(window.responseBody);
 
-					document.querySelector("body").classList.remove("hide");
+
 					// Optionally, embed in HTML
 					//document.body.innerHTML += `<pre>${JSON.stringify(window.responseBody, null, 2)}</pre>`;
 				})
@@ -386,7 +386,10 @@
 			return match ? match[2] : null;
 		}
 
-
+		window.addEventListener('offerDisplayed', function (event) {
+			document.querySelector("body").classList.remove("hide");
+			// Handle the event, e.g., update UI
+		});
 	</script>
 </body>
 

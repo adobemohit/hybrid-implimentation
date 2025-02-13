@@ -275,7 +275,7 @@
 			},
 			meta: {
 				state: {
-					domain: "localhost",
+					URL: "https://adobemohit.github.io/",
 					cookiesEnabled: true,
 					entries: [
 						{
@@ -296,7 +296,9 @@
 			headers: headers,
 			body: JSON.stringify(data)
 		})
-			.then(response => response.json()) // Parse the JSON response
+			.then(response => {
+				response.json()
+			}) // Parse the JSON response
 			.then(data => {
 				console.log("Success:", data);
 			})

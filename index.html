@@ -155,6 +155,8 @@
 					// Output response to the page
 					console.log(window.responseHeader);
 					console.log(window.responseBody);
+
+					document.querySelector("body").classList.remove("hide");
 					// Optionally, embed in HTML
 					//document.body.innerHTML += `<pre>${JSON.stringify(window.responseBody, null, 2)}</pre>`;
 				})
@@ -172,8 +174,13 @@
 
 	</script>
 </head>
+<style>
+	.hide {
+		display: none !;
+	}
+</style>
 
-<body class="is-preload landing">
+<body class="is-preload landing hide">
 	<div id="page-wrapper">
 
 		<!-- Header -->

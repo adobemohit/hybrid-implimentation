@@ -16,6 +16,104 @@
 	</noscript>
 	<script src="https://assets.adobedtm.com/a539bf324e10/167e1759db19/launch-e8987cc01cb5.js" async></script>
 </head>
+<?php
+
+// Define the URL and DataStream ID
+$dataStreamId = "caa8ce09-b14f-4060-b1bb-c4725b91f0f9";
+$url = "https://edge.adobedc.net/ee/v2/interact?dataStreamId=" . $dataStreamId;
+
+// Define the headers
+$headers = [
+    "Content-Type: text/plain",
+];
+
+// Define the POST data as a JSON string
+$postData = '{
+   "event": {
+      "xdm": {
+         "web": {
+            "webPageDetails": {
+               "URL": "adobemohit.github.io"
+            },
+            "webReferrer": {
+               "URL": ""
+            }
+         },
+         "identityMap": {
+            "FPID": [
+               {
+                  "id": "xyz",
+                  "authenticatedState": "ambiguous",
+                  "primary": true
+               }
+            ]
+         },
+         "timestamp": "2022-06-23T22:21:00.878Z"
+      },
+      "data": {}
+   },
+   "query": {
+      "identity": {
+         "fetch": [
+            "ECID"
+         ]
+      },
+      "personalization": {
+         "schemas": [
+            "https://ns.adobe.com/personalization/default-content-item",
+            "https://ns.adobe.com/personalization/html-content-item",
+            "https://ns.adobe.com/personalization/json-content-item",
+            "https://ns.adobe.com/personalization/redirect-item",
+            "https://ns.adobe.com/personalization/dom-action"
+         ],
+         "decisionScopes": [
+            "__view__",
+            "sample-json-offer"
+         ]
+      }
+   },
+   "meta": {
+      "state": {
+         "domain": "localhost",
+         "cookiesEnabled": true,
+         "entries": [
+            {
+               "key": "kndctr_XXX_AdobeOrg_identity",
+               "value": "abc123"
+            },
+            {
+               "key": "kndctr_XXX_AdobeOrg_cluster",
+               "value": "or2"
+            }
+         ]
+      }
+   }
+}';
+
+// Initialize cURL session
+$ch = curl_init();
+
+// Set cURL options
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+
+// Execute the request and capture the response
+$response = curl_exec($ch);
+
+// Check for errors
+if ($response === false) {
+    $error = curl_error($ch);
+    echo "cURL Error: " . $error;
+} else {
+    echo "Response: " . $response;
+}
+
+// Close the cURL session
+curl_close($ch);
+?>
 
 <body class="is-preload landing">
 	<div id="page-wrapper">

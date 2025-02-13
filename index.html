@@ -387,8 +387,8 @@
 		}
 
 		window.addEventListener('offerDisplayed', function (event) {
-			document.querySelector("body").classList.remove("hide");
-			// Handle the event, e.g., update UI
+			var $body = $('body');
+			$body.removeClass('is-preload');
 		});
 	</script>
 </body>
